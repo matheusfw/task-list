@@ -8,7 +8,11 @@ class TaskService {
         $this->carregarEmArquivo();
     }
 
-    public function adicionar(Task $task) {
+    public function adicionar($titulo) {
+        $id = $this->gerarProximoId();
+
+        $task = new Task($id, $titulo);
+
         $this->tasks[] = $task;
     }
 
@@ -30,6 +34,17 @@ class TaskService {
             }
         }
         return false;
+    }
+
+    private function gerarProximoId() {
+        $maior = 0;
+
+        foreach ($this->tasks as $task) {
+            if ($task->getId() > $maior) {
+                $maior = $task->getId();
+            }
+        }
+        return $maior + 1;
     }
 
     public function atualizarTitulo($id, $novoTitulo) {
@@ -72,6 +87,7 @@ class TaskService {
 
         foreach ($this->tasks as $task) {
             $dados[] = [
+                'id' => $task->getId(),
                 'titulo' => $task->getTitulo(),
                 'concluida' => $task->getStatus()
             ];
