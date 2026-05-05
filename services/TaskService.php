@@ -21,6 +21,38 @@ class TaskService {
         return $lista;
     }
 
+    public function deletar($id) {
+        foreach ($this->tasks as $index => $task) {
+            if ($task->getId() == $id) {
+                unset($this->tasks[$index]);
+                $this->tasks = array_values($this->tasks);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function atualizarTitulo($id, $novoTitulo) {
+        foreach ($this->tasks as $task) {
+            if ($task->getId() == $id) {
+                $task->setTitulo($novoTitulo);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function tarefaConcluida($id) {
+        foreach ($this->tasks as $task) {
+            if ($task->getId() == $id) {
+                $task->concluirTarefa();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function contarConcluidas() {
         $total = 0;
 
@@ -59,7 +91,7 @@ class TaskService {
         $dados = json_decode($json, true);
 
         foreach ($dados as $item) {
-            $task = new Task($item['titulo']);
+            $task = new Task($item['titulo'], $item['id']);
             $task->setStatus(($item['concluida']));
             $this->tasks[] = $task;
         }

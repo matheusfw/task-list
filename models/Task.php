@@ -1,11 +1,17 @@
 <?php
 class Task {
+    private $id;    
     private $titulo;
     private $concluida;
 
-    public function __construct($titulo) {
+    public function __construct($id, $titulo) {
+        $this->id = $id;
         $this->titulo = $titulo;
         $this->concluida = false;
+    }
+
+    public function getId() {
+        return $this->id;
     }
 
     public function getTitulo() {
@@ -30,7 +36,7 @@ class Task {
 
     public function exibir() {
         $status = $this->concluida ? "[X]" : "[ ]";
-        return $status . " " . $this->titulo;
+        return "#{$this->id} {$status} {$this->titulo}";
     }
 }
 
